@@ -10,4 +10,4 @@ o365 version
 
 o365 spo login $SITE_URL --authType password --userName $EMAIL --password $PASS
 
-o365 spo app add --filePath "./sharepoint/solution/test-solution.sppkg" --overwrite --verbose
+o365 spo app add --filePath "C:/Program Files/nodejs/TestSolution/sharepoint/solution/test-solution.sppkg" --overwrite --verbose
