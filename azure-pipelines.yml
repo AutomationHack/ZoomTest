@@ -1,0 +1,39 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm test
+  displayName: 'npm install and build'
+
+- script: |
+    gulp clean
+    gulp bundle --ship
+    gulp package-solution --ship
+  displayName: 'build and pakage the solution'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+   pathtoPublish: '$(Build.SourcesDirectory)/sharepoint/solution/test-solution.sppkg'
+   ArtifactName: 'SPFx sppkg'
+  displayName: 'Publish and build SPFx Artifact'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+   pathtoPublish: '$(Build.SourcesDirectory)/devops/release/'
+   ArtifactName: 'Office 365 CLI scripts'
+  displayName: 'Publish build Office 365 CLI Artifact'
